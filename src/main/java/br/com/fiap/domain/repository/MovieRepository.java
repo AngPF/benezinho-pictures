@@ -1,6 +1,5 @@
 package br.com.fiap.domain.repository;
 
-import br.com.fiap.domain.entity.Genre;
 import br.com.fiap.domain.entity.Movie;
 import br.com.fiap.infra.ConnectionFactory;
 
