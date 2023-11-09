@@ -100,6 +100,6 @@ Para acessar digite no prompt:
 git clone https://github.com/Benefrancis/benezinho-picture.git && cd javapet && git checkout correcao
 ```
 
-A atividade é individual, em caso de fraude de qualquer tipo todos os envolvidos receberão nota ZERO.
+A atividade é em dupla, não se esqueça de colocar o nome dos integrantes no arquivo contido em documentacao/equipe.txt.  Em caso de fraude de qualquer tipo, todos os envolvidos receberão nota ZERO.
 
 Boa prova.
