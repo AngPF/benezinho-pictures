@@ -111,27 +111,17 @@ public class GenreRepository implements Repository<Genre, Long> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-
             ps = conn.prepareStatement( sql,  new String[] { "ID_GENRE" } );
             ps.setString( 1, genre.getName() );
-
-
             ps.executeUpdate();
-
             rs = ps.getGeneratedKeys();
-            ps.closeOnCompletion();
             if (rs.next()) {
-
-                System.out.println( rs.getLong(1 ) );
-
                 genre.setId( rs.getLong( 1 ) );
             }
-
-
         } catch (SQLException e) {
             System.err.println( "Não foi possível salvar no banco de dados: " + e.getMessage() + "\n" + e.getCause() + "\n" + e.getErrorCode() );
         } finally {
-            fecharObjetos( null, ps, conn );
+            fecharObjetos( rs, ps, conn );
         }
         return genre;
     }

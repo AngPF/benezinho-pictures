@@ -129,16 +129,12 @@ public class MovieRepository implements Repository<Movie, Long> {
         ResultSet rs = null;
         try {
             ps = conn.prepareStatement( sql, new String[]{"ID_MOVIE"} );
-
             ps.setString( 1, movie.getTitle() );
             ps.setBoolean( 2, movie.isAdult() );
             ps.setString( 3, movie.getOriginalLanguage() );
             ps.setLong( 4, movie.getGenre().getId() );
-
             ps.executeUpdate();
-
             rs = ps.getGeneratedKeys();
-
             if (rs.next()) {
                 final Long id = rs.getLong( 1 );
                 movie.setId( id );
