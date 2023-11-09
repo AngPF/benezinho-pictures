@@ -91,30 +91,83 @@ public class GenreRepository implements Repository<Genre, Long> {
         return genero;
     }
 
+    /**
+     * Maneira que vinhamos persistindo.
+     * Só funciona no ORACLE
+     *
+     * @param genre
+     * @return
+     */
     @Override
     public Genre persist(Genre genre) {
 
         var sql = """
-                BEGIN
-                INSERT INTO (ID_GENRE, NM_GENRE)
+                INSERT INTO TB_GENRE (ID_GENRE, NM_GENRE)
                 values
                 (SQ_GENRE.nextval,?)
-                returning ID_GENRE into ?;  END;
                 """;
 
         Connection conn = factory.getConnection();
-        CallableStatement cs = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
-            cs = conn.prepareCall( sql );
-            cs.setString( 1, genre.getName() );
-            cs.registerOutParameter( 2, Types.BIGINT );
-            cs.executeUpdate();
-            genre.setId( cs.getLong( 2 ) );
+
+            ps = conn.prepareStatement( sql,  new String[] { "ID_GENRE" } );
+            ps.setString( 1, genre.getName() );
+
+
+            ps.executeUpdate();
+
+            rs = ps.getGeneratedKeys();
+            ps.closeOnCompletion();
+            if (rs.next()) {
+
+                System.out.println( rs.getLong(1 ) );
+
+                genre.setId( rs.getLong( 1 ) );
+            }
+
+
         } catch (SQLException e) {
-            System.err.println( "Não foi possível salvar no banco de dados: " + e.getMessage() );
+            System.err.println( "Não foi possível salvar no banco de dados: " + e.getMessage() + "\n" + e.getCause() + "\n" + e.getErrorCode() );
         } finally {
-            fecharObjetos( null, cs, conn );
+            fecharObjetos( null, ps, conn );
         }
         return genre;
+    }
+
+    @Override
+    public Genre findByName(String texto) {
+
+        Genre genero = null;
+
+        var sql = """
+                SELECT *
+                FROM TB_GENRE
+                WHERE trim(upper(NM_GENRE)) = ?
+                """;
+
+        Connection conn = factory.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement( sql );
+            ps.setString( 1, texto.toUpperCase().trim() );
+            rs = ps.executeQuery();
+
+            if (rs.isBeforeFirst()) {
+                while (rs.next()) {
+                    var idGenre = rs.getLong( "ID_GENRE" );
+                    var name = rs.getString( "NM_GENRE" );
+                    genero = new Genre( idGenre, name );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println( "Não foi possível realizar a consulta ao banco de dados: " + e.getMessage() );
+        } finally {
+            fecharObjetos( rs, ps, conn );
+        }
+        return genero;
     }
 }

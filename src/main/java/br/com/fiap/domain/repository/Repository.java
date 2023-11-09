@@ -16,16 +16,15 @@ public interface Repository<T, U> {
     public T persist(T t);
 
 
-    default void fecharObjetos(ResultSet rs, Statement st, Connection con) {
+    public default void fecharObjetos(ResultSet rs, Statement st, Connection con) {
         try {
-            if (Objects.nonNull( rs ) && !rs.isClosed()) {
-                rs.close();
-            }
-            st.close();
-            con.close();
+            if (Objects.nonNull( rs ) && !rs.isClosed()) rs.close();
+            if (Objects.nonNull( st ) && !st.isClosed()) st.close();
+            if (Objects.nonNull( con ) && !con.isClosed()) con.close();
         } catch (SQLException e) {
             System.err.println( "Erro ao encerrar o ResultSet, a Connection e o Statment!\n" + e.getMessage() );
         }
     }
 
+    public T findByName(String texto);
 }
