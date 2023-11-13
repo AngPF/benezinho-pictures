@@ -1,6 +1,6 @@
 package br.com.fiap.domain.repository;
 
-import br.com.fiap.domain.entity.Genre;
+import br.com.fiap.domain.entity.Cliente;
 import br.com.fiap.infra.ConnectionFactory;
 
 import java.sql.*;
@@ -8,31 +8,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class GenreRepository implements Repository<Genre, Long> {
+public class ClienteRepository implements Repository<Cliente, Long> {
 
 
     private ConnectionFactory factory;
 
-    private static final AtomicReference<GenreRepository> instance = new AtomicReference<>();
+    private static final AtomicReference<ClienteRepository> instance = new AtomicReference<>();
 
-    private GenreRepository() {
+    private ClienteRepository() {
         this.factory = ConnectionFactory.build();
     }
 
-    public static GenreRepository build() {
-        instance.compareAndSet( null, new GenreRepository() );
+    public static ClienteRepository build() {
+        instance.compareAndSet( null, new ClienteRepository() );
         return instance.get();
     }
 
 
     @Override
-    public List<Genre> findAll() {
+    public List<Cliente> findAll() {
 
-        List<Genre> generos = new ArrayList<>();
+        List<Cliente> clientes = new ArrayList<>();
 
         var sql = """
                 SELECT * 
-                FROM TB_GENRE               
+                FROM TB_CLIENTE               
                 """;
 
         Connection conn = factory.getConnection();
@@ -43,9 +43,9 @@ public class GenreRepository implements Repository<Genre, Long> {
             rs = st.executeQuery( sql );
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
-                    var id = rs.getLong( "ID_GENRE" );
-                    var name = rs.getString( "NM_GENRE" );
-                    generos.add( new Genre( id, name ) );
+                    var id = rs.getLong( "ID_CLIENTE" );
+                    var name = rs.getString( "NM_CLIENTE" );
+                    clientes.add( new Cliente( id, name ) );
                 }
             }
         } catch (SQLException e) {
@@ -53,18 +53,18 @@ public class GenreRepository implements Repository<Genre, Long> {
         } finally {
             fecharObjetos( rs, st, conn );
         }
-        return generos;
+        return clientes;
     }
 
     @Override
-    public Genre findById(Long id) {
+    public Cliente findById(Long id) {
 
-        Genre genero = null;
+        Cliente cliente = null;
 
         var sql = """
                 SELECT *
-                FROM TB_GENRE
-                WHERE ID_GENRE = ?
+                FROM TB_CLIENTE
+                WHERE ID_CLIENTE = ?
                 """;
 
         Connection conn = factory.getConnection();
@@ -78,9 +78,9 @@ public class GenreRepository implements Repository<Genre, Long> {
 
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
-                    var idGenre = rs.getLong( "ID_GENRE" );
-                    var name = rs.getString( "NM_GENRE" );
-                    genero = new Genre( idGenre, name );
+                    var idCliente = rs.getLong( "ID_CLIENTE" );
+                    var name = rs.getString( "NM_CLIENTE" );
+                    cliente = new Cliente( idCliente, name );
                 }
             }
         } catch (SQLException e) {
@@ -88,53 +88,46 @@ public class GenreRepository implements Repository<Genre, Long> {
         } finally {
             fecharObjetos( rs, ps, conn );
         }
-        return genero;
+        return cliente;
     }
 
-    /**
-     * Maneira que vinhamos persistindo.
-     * Só funciona no ORACLE
-     *
-     * @param genre
-     * @return
-     */
     @Override
-    public Genre persist(Genre genre) {
+    public Cliente persist(Cliente cliente) {
 
         var sql = """
-                INSERT INTO TB_GENRE (ID_GENRE, NM_GENRE)
+                INSERT INTO TB_CLIENTE (ID_CLIENTE, NM_CLIENTE)
                 values
-                (SQ_GENRE.nextval,?)
+                (SQ_CLIENTE.nextval,?)
                 """;
 
         Connection conn = factory.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            ps = conn.prepareStatement( sql,  new String[] { "ID_GENRE" } );
-            ps.setString( 1, genre.getName() );
+            ps = conn.prepareStatement( sql,  new String[] { "ID_CLIENTE" } );
+            ps.setString( 1, cliente.getName() );
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
             if (rs.next()) {
-                genre.setId( rs.getLong( 1 ) );
+                cliente.setId( rs.getLong( 1 ) );
             }
         } catch (SQLException e) {
             System.err.println( "Não foi possível salvar no banco de dados: " + e.getMessage() + "\n" + e.getCause() + "\n" + e.getErrorCode() );
         } finally {
             fecharObjetos( rs, ps, conn );
         }
-        return genre;
+        return cliente;
     }
 
     @Override
-    public Genre findByName(String texto) {
+    public Cliente findByName(String texto) {
 
-        Genre genero = null;
+        Cliente cliente = null;
 
         var sql = """
                 SELECT *
-                FROM TB_GENRE
-                WHERE trim(upper(NM_GENRE)) = ?
+                FROM TB_CLIENTE
+                WHERE trim(upper(NM_CLIENTE)) = ?
                 """;
 
         Connection conn = factory.getConnection();
@@ -148,9 +141,9 @@ public class GenreRepository implements Repository<Genre, Long> {
 
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
-                    var idGenre = rs.getLong( "ID_GENRE" );
-                    var name = rs.getString( "NM_GENRE" );
-                    genero = new Genre( idGenre, name );
+                    var idCliente = rs.getLong( "ID_CLIENTE" );
+                    var name = rs.getString( "NM_CLIENTE" );
+                    cliente = new Cliente( idCliente, name );
                 }
             }
         } catch (SQLException e) {
@@ -158,6 +151,6 @@ public class GenreRepository implements Repository<Genre, Long> {
         } finally {
             fecharObjetos( rs, ps, conn );
         }
-        return genero;
+        return cliente;
     }
 }

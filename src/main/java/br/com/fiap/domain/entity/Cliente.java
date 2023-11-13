@@ -6,12 +6,12 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Genre {
-
+public class Cliente {
 
     private Long id;
 
 
     private String name;
+
 
 }

@@ -1,21 +1,18 @@
--- Tables: 
+--------------------------------------------------------
+-- Excluindo todas as Tabelas
+--------------------------------------------------------
 
-drop table  ht_tb_pessoa  CASCADE CONSTRAINTS;
-drop table  HTE_TB_PESSOA  CASCADE CONSTRAINTS;
-drop table  HTE_TB_PF  CASCADE CONSTRAINTS;
-drop table  HTE_TB_PJ  CASCADE CONSTRAINTS;
-drop table  TB_AUTHORITY  CASCADE CONSTRAINTS;
-drop table  TB_AUTHORITY_USUARIO  CASCADE CONSTRAINTS;
-drop table  TB_GENRE  CASCADE CONSTRAINTS;
-drop table  TB_MOVIE  CASCADE CONSTRAINTS;
-drop table  TB_PESSOA  CASCADE CONSTRAINTS;
-drop table  TB_PF  CASCADE CONSTRAINTS;
-drop table  TB_PJ  CASCADE CONSTRAINTS;
-drop table  TB_USER CASCADE CONSTRAINTS;
+-- Excluindo a tabela T_VISTORIA
+DROP TABLE "T_VISTORIA";
 
+-- Excluindo a tabela T_BICICLETA
+DROP TABLE "T_BICICLETA";
 
--- SEQUENCIAS:
+-- Excluindo a tabela T_SEGURO
+DROP TABLE "T_SEGURO";
 
-drop sequence  SQ_GENRE;
-drop sequence  SQ_MOVIE
- 
+-- Excluindo a tabela T_EMPRESA
+DROP TABLE "T_EMPRESA";
+
+-- Excluindo a tabela T_CLIENTE
+DROP TABLE "T_CLIENTE";

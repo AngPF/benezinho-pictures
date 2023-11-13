@@ -8,16 +8,12 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class Movie {
+public class Bicicleta {
 
     private Long id;
 
-    private String title;
+    private String descricao;
 
-    private boolean adult;
-
-    private Genre genre;
-
-    private String originalLanguage;
+    private Cliente cliente;
 
 }
