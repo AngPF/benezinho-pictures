@@ -19,18 +19,13 @@ public record BicicletaDTO(
 
     public static Bicicleta of(BicicletaDTO dto) {
 
-        // É nulo?
         if (Objects.isNull( dto )) return null;
 
-        //Ele informou o id do produto?
         if (Objects.nonNull( dto.id )) return service.findById( dto.id );
 
-        //Se não informou o Id é porque está salvando um novo Bicicleta
         Bicicleta m = new Bicicleta();
         m.setId( null );
 
-        //Se existir cliente com o ID informado no Banco eu recupero todas as informações dele, mas
-        // se não for informado o id do cliente e informou o name eu salvo um novo cliente
         var cliente = Objects.nonNull( dto.cliente ) && (Objects.nonNull( dto.cliente.id() )) ?
                 clienteService.findById( dto.cliente.id() )
                 : !dto.cliente.name().equalsIgnoreCase( "" ) ? clienteService.persist( ClienteDTO.of( dto.cliente ) ) : null;

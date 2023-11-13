@@ -13,9 +13,7 @@ public class Main {
     private static final String BASE_URI = "http://localhost/api";
 
     public static HttpServer startServer() {
-        // Configure container response filters (CORSFilter)
-        // Configure ConnectionFactory
-        // Configure os pacotes em que temos Recursos da API REST
+
         final ResourceConfig rc = new ResourceConfig()
                 .register( ConnectionFactory.build() )
                 .packages( "br.com.fiap.domain.resource" );
@@ -25,8 +23,7 @@ public class Main {
     public static void main(String[] args) {
         var server = startServer();
         System.out.println( String.format(
-                "Pictures app 🍿🤓👍🏽   started with endpoints available " +
-                        "as %s%nHit Ctrl-C to stop it....", BASE_URI ) );
+                "Seguros started with endpoints available ", BASE_URI ) );
         try {
             System.in.read();
             server.stop();

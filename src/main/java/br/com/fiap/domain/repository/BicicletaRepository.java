@@ -47,7 +47,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
                     var id = rs.getLong( "ID_BICICLETA" );
-                    var descricao = rs.getString( "TITLE" );
+                    var descricao = rs.getString( "DESCRICAO" );
                     var cliente = clienteRepository.findById( idCliente );
                     bicicletas.add( new Bicicleta( id, descricao, cliente ) );
                 }
@@ -85,8 +85,8 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
                 while (rs.next()) {
 
                     var idBicicleta = rs.getLong( "ID_BICICLETA" );
-                    var descricao = rs.getString( "TITLE" );
-                    var idCliente = rs.getLong( "GENRE" );
+                    var descricao = rs.getString( "DESCRICAO" );
+                    var idCliente = rs.getLong( "CLIENTE" );
                     var cliente = clienteRepository.findById( idCliente );
                     bicicleta = new Bicicleta( idBicicleta, descricao, cliente);
                 }
@@ -105,7 +105,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
 
         var sql = """
                 INSERT INTO TB_BICICLETA
-                (ID_BICICLETA, TITLE, ADULT, ORIGINALLANGUAGE, GENRE )
+                (ID_BICICLETA, DESCRICAO, CLIENTE )
                 VALUES
                 (SQ_BICICLETA.nextval, ?,?,?,?)
                 """;
@@ -139,7 +139,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
         var sql = """
                 SELECT * 
                 FROM TB_BICICLETA
-                WHERE trim(UPPER(TITLE)) = ?
+                WHERE trim(UPPER(DESCRICAO)) = ?
                 """;
 
         Connection conn = factory.getConnection();
@@ -154,7 +154,7 @@ public class BicicletaRepository implements Repository<Bicicleta, Long> {
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
                     var idBicicleta = rs.getLong( "ID_BICICLETA" );
-                    var idCliente = rs.getLong( "GENRE" );
+                    var idCliente = rs.getLong( "CLIENTE" );
                     var cliente = clienteRepository.findById( idCliente );
                     bicicleta = new Bicicleta( idBicicleta, cliente );
                 }
